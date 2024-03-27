@@ -48,6 +48,7 @@ from TorchClassifier.myTorchModels.TorchCNNmodels import createTorchCNNmodel
 from TorchClassifier.myTorchModels.TorchOptim import gettorchoptim
 from TorchClassifier.myTorchModels.TorchLearningratescheduler import setupLearningratescheduler
 from TorchClassifier.TrainValUtils import ProgressMeter, AverageMeter, accuracy
+from TorchClassifier.Datasetutil.wildfiredatautil import WildfireDatasetLoader
 # from TFClassifier.Datasetutil.TFdatasetutil import loadTFdataset #loadtfds, loadkerasdataset, loadimagefolderdataset
 # from TFClassifier.myTFmodels.CNNsimplemodels import createCNNsimplemodel
 # from TFClassifier.Datasetutil.Visutil import plot25images, plot9imagesfromtfdataset, plot_history
@@ -388,13 +389,19 @@ def main():
     else:
         print("No GPU and TPU enabled")
     
-    #Load dataset
-    dataloaders, dataset_sizes, class_names, img_shape = loadTorchdataset(args.data_name,args.data_type, args.data_path, args.img_height, args.img_width, args.batchsize)
+    if args.data_name == 'wildfire' :
+        loader = WildfireDatasetLoader(args.data_name, args.data_path)
+        dataloaders, dataset_sizes, class_names, img_shape = loader.load()
+    else:
+        # Load Torch dataset
+        dataloaders, dataset_sizes, class_names, img_shape = loadTorchdataset(args.data_name, args.data_type, args.data_path, args.img_height, args.img_width, args.batchsize)
+        
+
     #Visualize dataset
     test_loader=dataloaders['train']
     # obtain one batch of test images
     images, labels = next(iter(test_loader))
-    # Create a grid from the images and show them
+    # Create a grid from the images and show thema
     img_grid = torchvision.utils.make_grid(images)
     matplotlib_imshow(img_grid, one_channel=False)
     tensorboard_writer.add_image('Image-grid',img_grid)

@@ -31,7 +31,7 @@ except:
     # !pip install -q torchinfo
     # from torchinfo import summary
 
-os.environ['TORCH_HOME'] = '/data/cmpe249-fa23/torchhome/' #setting the environment variable
+os.environ['TORCH_HOME'] = 'C:/Users/GeoFly/Documents/rfan/MultiModalClassifier/torchhome' #setting the environment variable
 
 CHECKPOINT_PATH="./outputs"
 CHECKPOINT_file=os.path.join(CHECKPOINT_PATH, 'checkpoint.pth.tar')
@@ -67,11 +67,11 @@ device = None
 #python myTorchTrainer.py --data_name 'imagenet_blurred' --data_type 'trainonly' --data_path "/data/cmpe249-fa22/ImageClassData" --model_name 'resnet50' --learningratename 'StepLR' --lr 0.1 --momentum 0.9 --wd 1e-4 --optimizer 'SGD'
 
 parser = configargparse.ArgParser(description='myTorchClassify')
-parser.add_argument('--data_name', type=str, default='imagenet_blurred',
-                    help='data name: imagenet_blurred, tiny-imagenet-200, hymenoptera_data, CIFAR10, MNIST, flower_photos')
+parser.add_argument('--data_name', type=str, default='tiny-imagenet-200',
+                    help='data name: imagenet_blurred, tiny-imagenet-200, hymenoptera_data, CIFAR10, MNIST, flower_photos, wildfire')
 parser.add_argument('--data_type', default='trainonly', choices=['trainonly','trainvalfolder', 'traintestfolder', 'torchvisiondataset'],
                     help='the type of data') 
-parser.add_argument('--data_path', type=str, default="/data/cmpe249-fa23/ImageClassData",
+parser.add_argument('--data_path', type=str, default="C:/Users/GeoFly/Documents/rfan/MultiModalClassifier/Dataset",
                     help='path to get data') #/Developer/MyRepo/ImageClassificationData; r"E:\Dataset\ImageNet\tiny-imagenet-200"
 parser.add_argument('--img_height', type=int, default=224,
                     help='resize to img height, 224')
@@ -86,7 +86,7 @@ parser.add_argument('--model_type', default='ImageNet', choices=['ImageNet', 'cu
                     help='the network')
 parser.add_argument('--torchhub', default='facebookresearch/deit:main',
                     help='the torch hub link')
-parser.add_argument('--resume', default="outputs/imagenet_blurred_resnet50_0328/model_best.pth.tar", type=str, metavar='PATH',
+parser.add_argument('--resume', default="", type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--arch', default='Pytorch', choices=['Tensorflow', 'Pytorch'],
                     help='Model Name, default: Pytorch.')
@@ -112,7 +112,7 @@ parser.add_argument('--epochs', type=int, default=40,
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
 parser.add_argument('--classmap', default='TorchClassifier/Datasetutil/imagenet1000id2label.json', type=str, metavar='FILENAME',
-                    help='path to class to idx mapping file (default: "")')
+                    help='path to class to idx mapping file (default: "TorchClassifier/Datasetutil/imagenet1000id2label.json")')
 parser.add_argument('--GPU', type=bool, default=True,
                     help='use GPU')
 parser.add_argument('--gpuid', default=0, type=int,
@@ -123,7 +123,7 @@ parser.add_argument('--ddp', default=False, type=bool,
 #                     help='use TPU')
 # parser.add_argument('--MIXED_PRECISION', type=bool, default=False,
 #                     help='use MIXED_PRECISION')
-parser.add_argument('--TAG', default='0910',
+parser.add_argument('--TAG', default='0326',
                     help='setup the experimental TAG to differentiate different running results')
 parser.add_argument('--reproducible', type=bool, default=False,
                     help='get reproducible results we can set the random seed for Python, Numpy and PyTorch')
@@ -476,3 +476,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#python myTorchTrainer.py --data_name 'tiny-imagenet-200' --data_type 'trainonly' --data_path "C:\Users\GeoFly\Documents\rfan\MultiModalClassifier\Dataset" --model_name 'resnetmodel1' --learningratename 'StepLR' --lr 0.1 --momentum 0.9 --wd 1e-4 --optimizer 'SGD'
+#python myTorchTrainer.py --data_name 'wildfire' --data_type 'trainonly' --data_path "C:\Users\GeoFly\Documents\rfan\Wildfire_project_fall2023\Wildfire_SourceData\the_wildfire_dataset" --model_name 'mlpmodel1' --learningratename 'StepLR' --lr 0.1 --momentum 0.9 --wd 1e-4 --optimizer 'SGD' --epochs 15
+

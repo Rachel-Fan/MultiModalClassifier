@@ -65,6 +65,7 @@ def createImageNetmodel(model_name, torchhub=None):
     elif torchhub is not None:
         #'deit_base_patch16_224'
         currentmodel = torch.hub.load('facebookresearch/deit:main', model_name, pretrained=True)
+        #currentmodel = torch.hub.load('C:/Users/GeoFly/Documents/rfan/MultiModalClassifier/torchhome/hub/facebookresearch_deit_main', model_name, pretrained=True)
         return currentmodel, None, 1000, None #.num_classes
         # print("Model's state_dict:") #
         # for param_tensor in currentmodel.state_dict():
@@ -502,7 +503,7 @@ def create_torchvisionmodel(modulename, numclasses, freezeparameters=True, pretr
         lastlayer=lastmoduleinlist[-1]
         if isinstance(lastlayer, nn.Linear):
             print('Linear layer')
-            newclassifier = nn.Linear(in_features=lastlayer.in_features, out_features=classnum)
+            newclassifier = nn.Linear(in_features=lastlayer.in_features, out_features=numclasses)
         elif isinstance(lastlayer, nn.Sequential):
             print('Sequential layer')
             lastlayerlist=list(lastlayer) #[-1] #last layer
@@ -517,7 +518,7 @@ def create_torchvisionmodel(modulename, numclasses, freezeparameters=True, pretr
                                 bias=True))
             else:
                 print("Error: Sequential layer is not list:",lastlayer)
-                #newclassifier = nn.Linear(in_features=lastlayer.in_features, out_features=classnum)
+                #newclassifier = nn.Linear(in_features=lastlayer.in_features, out_features=numclasses)
         if lastmodulename=='heads':
             pretrained_model.heads = newclassifier #.to(device)
         elif lastmodulename=='classifier':

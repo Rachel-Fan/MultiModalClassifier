@@ -25,7 +25,7 @@ print(torch.__version__)
 from TorchClassifier.Datasetutil.Visutil import visfirstimageinbatch, vistestresult, matplotlib_imshow, plot_most_incorrect, plot_confusion_matrix
 from TorchClassifier.Datasetutil.Torchdatasetutil import loadTorchdataset
 from TorchClassifier.Datasetutil.Imagenetdata import loadjsontodict, dict2array, preprocess_image, preprocess_imagecv2
-from TorchClassifier.myTorchModels.TorchCNNmodels import createTorchCNNmodel, createImageNetmodel
+#from TorchClassifier.myTorchModels.TorchCNNmodels import createTorchCNNmodel, createImageNetmodel
 from TorchClassifier.TrainValUtils import create_model, test_model, postfilter, \
     model_inference, inference_singleimage, inference_batchimage, collect_incorrect_examples, getclass_newnames
 
@@ -33,7 +33,7 @@ model = None
 device = None
 # import logger
 
-os.environ['TORCH_HOME'] = '/data/cmpe249-fa23/torchhome/' #setting the environment variable
+os.environ['TORCH_HOME'] = 'C:/Users/GeoFly/Documents/rfan/MultiModalClassifier/torchhome' #setting the environment variable
 
 #Tiny Imagenet evaluation
 #python myTorchEvaluator.py --data_name 'tiny-imagenet-200' --data_type 'trainonly' 
@@ -74,12 +74,12 @@ parser.add_argument('--topk', type=int, default=5,
 parser.add_argument('--save_path', type=str, default='./outputs/',
                     help='path to save the model')
 # network
-parser.add_argument('--model_name', default='deit_base_patch16_224',
+parser.add_argument('--model_name', default='resnetmodel1',
                     help='the network') #choices=['resnet50', 'mlpmodel1', 'lenet', 'resnetmodel1', 'vggmodel1', 'cnnmodel1']
 parser.add_argument('--model_type', default='ImageNet', choices=['ImageNet', 'custom'],
                     help='the network')
-parser.add_argument('--torchhub', default='facebookresearch/deit:main',
-                    help='the torch hub link')
+parser.add_argument('--torchhub', default=None,
+                    help='the torch hub link: facebookresearch/deit:main')
 parser.add_argument('--checkpoint', default='outputs/tiny-imagenet-200_resnet50_0328/checkpoint.pth.tar', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 # parser.add_argument('--arch', default='Pytorch', choices=['Tensorflow', 'Pytorch'],
@@ -148,10 +148,11 @@ def main():
     model_ft, model_classnames, numclasses, classmap = create_model(args.model_name, args.model_type, args.classmap, args.checkpoint, args.torchhub, device, img_shape)
     model_ft.eval()
 
+    '''
     newname="Sports Cars"#classmap['n04285008']
     image_path="/data/cmpe249-fa23/ImageClassData/tiny-imagenet-200/train/n04285008/images/n04285008_31.JPEG"#n04285008_497.JPEG"
     inference_singleimage(image_path, model_ft, device, classnames=model_classnames, truelabel=newname, size=args.img_height, top_k=args.topk)
-    
+    '''
 
     #Load dataset
     dataloaders, dataset_sizes, dataset_classnames, img_shape = loadTorchdataset(args.data_name,args.data_type, args.data_path, args.img_height, args.img_width, args.batchsize)
